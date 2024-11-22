@@ -17,19 +17,18 @@ public class TestRunner {
     private final Logger logger = LoggerFactory.getLogger(TestRunner.class);
 
     public void run(Class<?> testClass) {
-        Object testInstance = getInstance(testClass);
         List<Method> beforeMethod = findAnnotatedMethod(testClass, BeforeTest.class);
         List<Method> afterMethod = findAnnotatedMethod(testClass, AfterTest.class);
-
         Map<Boolean, Integer> map = new HashMap<>();
         int count = 0;
         for (Method testMethod : testClass.getDeclaredMethods()) {
             if (testMethod.isAnnotationPresent(Test.class)) {
-                boolean result = runTestPipelineAndReturnResult(testInstance, beforeMethod, afterMethod, testMethod);
+                boolean result = runTestPipelineAndReturnResult(testClass, beforeMethod, afterMethod, testMethod);
                 map.put(result, map.getOrDefault(result, 0) + 1);
                 count++;
             }
         }
+
         logger.info("\nTests count: {}\nSuccess: {}\nFailed: {}", count,
                 map.getOrDefault(true, 0),
                 map.getOrDefault(false, 0));
@@ -54,10 +53,11 @@ public class TestRunner {
         return methods;
     }
 
-    private boolean runTestPipelineAndReturnResult(Object testInstance,
+    private boolean runTestPipelineAndReturnResult(Class<?> testClass,
                                                    List<Method> beforeMethods,
                                                    List<Method> afterMethods,
                                                    Method testMethod) {
+        Object testInstance = getInstance(testClass);
         executeMethods(beforeMethods, testInstance);
         boolean result = executeTest(testMethod, testInstance);
         executeMethods(afterMethods, testInstance);
