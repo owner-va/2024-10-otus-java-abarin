@@ -58,21 +58,25 @@ public class TestRunner {
                                                    List<Method> afterMethods,
                                                    Method testMethod) {
         Object testInstance = getInstance(testClass);
-        executeMethods(beforeMethods, testInstance);
-        boolean result = executeTest(testMethod, testInstance);
-        executeMethods(afterMethods, testInstance);
+        boolean result = true;
+        if (executeMethods(beforeMethods, testInstance)) {
+            result = executeTest(testMethod, testInstance);
+        }
+        result = result & executeMethods(afterMethods, testInstance);
         logger.info("-----------------------------------------------");
         return result;
     }
 
-    private void executeMethods(List<Method> methods, Object instance) {
+    private boolean executeMethods(List<Method> methods, Object instance) {
         for (Method method : methods) {
             try {
                 method.invoke(instance);
             } catch (Exception e) {
-                throw new RuntimeException("Error execute " + method.getName() + ". Exception: " + e.getMessage());
+                logger.info("{} failed, reason: {}", method.getName(), e.getCause().getMessage());
+                return false;
             }
         }
+        return true;
     }
 
     private boolean executeTest(Method testMethod, Object testInstance) {
