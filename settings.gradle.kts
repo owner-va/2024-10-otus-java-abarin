@@ -2,6 +2,7 @@ rootProject.name = "2024-10-otus-java-abarin"
 include("hw01-gradle")
 include("hw02-collections")
 include("hw03-reflections")
+include("hw04-gc")
 
 pluginManagement {
     val jgitver: String by settings
