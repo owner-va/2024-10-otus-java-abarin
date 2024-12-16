@@ -1,7 +1,7 @@
 import io.spring.gradle.dependencymanagement.dsl.DependencyManagementExtension
 import name.remal.gradle_plugins.sonarlint.SonarLintExtension
-import org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES
 import org.gradle.plugins.ide.idea.model.IdeaLanguageLevel
+import org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES
 
 plugins {
     idea
@@ -34,6 +34,8 @@ allprojects {
     val testcontainersBom: String by project
     val protobufBom: String by project
     val guava: String by project
+    val lombok: String by project
+    val junit: String by project
 
     apply(plugin = "io.spring.dependency-management")
     dependencyManagement {
@@ -44,6 +46,8 @@ allprojects {
                 mavenBom("com.google.protobuf:protobuf-bom:$protobufBom")
             }
             dependency("com.google.guava:guava:$guava")
+            dependency("org.projectlombok:lombok:$lombok")
+            dependency("org.junit.jupiter:junit-jupiter:$junit")
         }
     }
 
