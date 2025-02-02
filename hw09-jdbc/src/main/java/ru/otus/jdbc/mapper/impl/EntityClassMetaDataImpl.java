@@ -11,7 +11,7 @@ import java.util.List;
 public class EntityClassMetaDataImpl<T> implements EntityClassMetaData<T> {
 
     private final String className;
-    private final Constructor constructor;
+    private final Constructor<T> constructor;
     private final Field idField;
     private final List<Field> fields;
 
@@ -31,7 +31,7 @@ public class EntityClassMetaDataImpl<T> implements EntityClassMetaData<T> {
     }
 
     @Override
-    public Constructor getConstructor() {
+    public Constructor<T> getConstructor() {
         return this.constructor;
     }
 
