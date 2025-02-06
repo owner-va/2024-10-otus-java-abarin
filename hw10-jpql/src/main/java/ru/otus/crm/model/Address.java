@@ -17,7 +17,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Entity
 @Table(name = "address")
-public class Address {
+public class Address implements Cloneable{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,4 +27,8 @@ public class Address {
     @Column(name = "street")
     private String street;
 
+    @Override
+    public Address clone() {
+        return new Address(this.id, this.street);
+    }
 }

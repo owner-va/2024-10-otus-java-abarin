@@ -52,7 +52,7 @@ public class Client implements Cloneable {
         this.name = name;
     }
 
-    public <E> Client(Long id, String name, Address address, List<Phone> phones) {
+    public Client(Long id, String name, Address address, List<Phone> phones) {
         this.id = id;
         this.name = name;
         this.address = address;
@@ -71,7 +71,17 @@ public class Client implements Cloneable {
     @Override
     @SuppressWarnings({"java:S2975", "java:S1182"})
     public Client clone() {
-        return new Client(this.id, this.name, this.address, this.phones);
+        Client cloneClient = new Client(id, name);
+        cloneClient.setAddress(address.clone());
+        List<Phone> clonedPhones = this.getPhones().stream()
+                .map(p -> {
+                    Phone clonedPhone = p.clone();
+                    clonedPhone.setClient(cloneClient);
+                    return clonedPhone;
+                })
+                .toList();
+        cloneClient.setPhones(clonedPhones);
+        return cloneClient;
     }
 
     @Override

@@ -18,7 +18,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Entity
 @Table(name = "phone")
-public class Phone {
+public class Phone implements Cloneable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -34,5 +34,9 @@ public class Phone {
     public Phone(Long id, String number) {
         this.id = id;
         this.number = number;
+    }
+
+    public Phone clone() {
+        return new Phone(id, number);
     }
 }
