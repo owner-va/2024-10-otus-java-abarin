@@ -9,29 +9,19 @@ import org.eclipse.jetty.server.handler.ResourceHandler;
 import ru.otus.helpers.FileSystemHelper;
 import ru.otus.services.ServiceClient;
 import ru.otus.services.TemplateProcessor;
-import ru.otus.services.UserService;
 import ru.otus.servlet.ClientServlet;
-import ru.otus.servlet.UsersApiServlet;
-import ru.otus.servlet.UsersServlet;
 
 public class UsersWebServerSimple implements UsersWebServer {
     private static final String START_PAGE_NAME = "index.html";
     private static final String COMMON_RESOURCES_DIR = "static";
 
-    private final UserService userService;
     private final Gson gson;
     protected final TemplateProcessor templateProcessor;
     private final Server server;
     private final ServiceClient clientService;
 
-    public UsersWebServerSimple(
-            int port,
-            UserService userService,
-            ServiceClient serviceClient,
-            Gson gson,
-            TemplateProcessor templateProcessor) {
+    public UsersWebServerSimple(int port, ServiceClient serviceClient, Gson gson, TemplateProcessor templateProcessor) {
         this.clientService = serviceClient;
-        this.userService = userService;
         this.gson = gson;
         this.templateProcessor = templateProcessor;
         server = new Server(port);
@@ -83,8 +73,6 @@ public class UsersWebServerSimple implements UsersWebServer {
 
     private ServletContextHandler createServletContextHandler() {
         ServletContextHandler servletContextHandler = new ServletContextHandler(ServletContextHandler.SESSIONS);
-        servletContextHandler.addServlet(new ServletHolder(new UsersServlet(templateProcessor, userService)), "/users");
-        servletContextHandler.addServlet(new ServletHolder(new UsersApiServlet(userService, gson)), "/api/user/*");
         servletContextHandler.addServlet(
                 new ServletHolder(new ClientServlet(templateProcessor, clientService)), "/admin/clients");
         return servletContextHandler;

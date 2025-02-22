@@ -8,7 +8,6 @@ import org.eclipse.jetty.server.Handler;
 import ru.otus.services.ServiceClient;
 import ru.otus.services.TemplateProcessor;
 import ru.otus.services.UserAuthService;
-import ru.otus.services.UserService;
 import ru.otus.servlet.AuthorizationFilter;
 import ru.otus.servlet.LoginServlet;
 
@@ -20,11 +19,10 @@ public class UsersWebServerWithFilterBasedSecurity extends UsersWebServerSimple 
     public UsersWebServerWithFilterBasedSecurity(
             int port,
             UserAuthService authService,
-            UserService userService,
             ServiceClient serviceClient,
             Gson gson,
             TemplateProcessor templateProcessor) {
-        super(port, userService, serviceClient, gson, templateProcessor);
+        super(port, serviceClient, gson, templateProcessor);
         this.authService = authService;
     }
 

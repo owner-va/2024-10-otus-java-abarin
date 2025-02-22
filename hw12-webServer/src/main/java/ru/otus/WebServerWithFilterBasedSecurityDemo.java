@@ -15,7 +15,6 @@ import ru.otus.server.UsersWebServerWithFilterBasedSecurity;
 import ru.otus.services.ServiceClientImpl;
 import ru.otus.services.TemplateProcessorImpl;
 import ru.otus.services.UserAuthServiceImpl;
-import ru.otus.services.UserServiceImpl;
 
 /*
     Полезные для демо ссылки
@@ -36,9 +35,9 @@ public class WebServerWithFilterBasedSecurityDemo {
 
     public static void main(String[] args) throws Exception {
         var configuration = new Configuration().configure(HIBERNATE_CFG_FILE);
+        runMigration(configuration);
         var sessionFactory =
                 HibernateUtils.buildSessionFactory(configuration, User.class, Client.class, Address.class, Phone.class);
-        runMigration(configuration);
         var transactionManager = new TransactionManagerHibernate(sessionFactory);
         UsersWebServer usersWebServer = getUsersWebServer(transactionManager);
         usersWebServer.start();
@@ -56,14 +55,13 @@ public class WebServerWithFilterBasedSecurityDemo {
         var templateProcessor = new TemplateProcessorImpl(TEMPLATES_DIR);
 
         var userTemplate = new DataTemplateHibernate<>(User.class);
-        var userService = new UserServiceImpl(userTemplate, transactionManager);
-        var authService = new UserAuthServiceImpl(userService);
+        var authService = new UserAuthServiceImpl(userTemplate, transactionManager);
 
         var clientTemplate = new DataTemplateHibernate<>(Client.class);
         var dbServiceClient = new ServiceClientImpl(transactionManager, clientTemplate);
 
         var gson = new GsonBuilder().serializeNulls().setPrettyPrinting().create();
         return new UsersWebServerWithFilterBasedSecurity(
-                WEB_SERVER_PORT, authService, userService, dbServiceClient, gson, templateProcessor);
+                WEB_SERVER_PORT, authService, dbServiceClient, gson, templateProcessor);
     }
 }
