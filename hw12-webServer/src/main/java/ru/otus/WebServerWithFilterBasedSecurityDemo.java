@@ -21,12 +21,6 @@ import ru.otus.services.UserAuthServiceImpl;
 
     // Стартовая страница
     http://localhost:8080
-
-    // Страница пользователей
-    http://localhost:8080/users
-
-    // REST сервис
-    http://localhost:8080/api/user/3
 */
 public class WebServerWithFilterBasedSecurityDemo {
     public static final String HIBERNATE_CFG_FILE = "hibernate.cfg.xml";
