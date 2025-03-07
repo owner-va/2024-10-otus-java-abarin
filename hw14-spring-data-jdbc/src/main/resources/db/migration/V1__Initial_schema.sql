@@ -1,0 +1,18 @@
+CREATE TABLE client (
+    id BIGSERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE address (
+    id BIGSERIAL PRIMARY KEY,
+    client_id BIGINT,
+    street VARCHAR(255) NOT NULL,
+    FOREIGN KEY (client_id) REFERENCES client(id) ON DELETE CASCADE
+);
+
+CREATE TABLE phone (
+    id BIGSERIAL PRIMARY KEY,
+    number VARCHAR(255),
+    client_id BIGINT NOT NULL,
+    FOREIGN KEY (client_id) REFERENCES client(id) ON DELETE CASCADE
+);

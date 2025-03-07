@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Clients</title>
+</head>
+<body>
+<h1>Clients List</h1>
+<table>
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Address</th>
+        <th>Phones</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="client : ${clients}">
+        <td th:text="${client.name}"></td>
+        <td th:text="${client.address.street}"></td>
+        <td>
+            <ul>
+                <li th:each="phone : ${client.phones}" th:text="${phone.number}"></li>
+            </ul>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<h2>Add New Client</h2>
+<form action="/" method="post">
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name" required>
+    <br>
+
+    <label for="street">Street:</label>
+    <input type="text" id="street" name="address.street" required>
+    <br>
+
+    <label for="phone1">Phone 1:</label>
+    <input type="text" id="phone1" name="phones[0].number" required>
+    <br>
+
+    <label for="phone2">Phone 2:</label>
+    <input type="text" id="phone2" name="phones[1].number">
+    <br>
+
+    <label for="phone3">Phone 3:</label>
+    <input type="text" id="phone3" name="phones[2].number">
+    <br>
+
+    <input type="submit" value="Add Client">
+</form>
+</body>
+</html>
