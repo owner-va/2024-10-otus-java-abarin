@@ -13,6 +13,7 @@ include("hw11-cache")
 include("hw12-webServer")
 include("hw13-di")
 include("hw14-spring-data-jdbc")
+include("hw15-executors")
 
 pluginManagement {
     val jgitver: String by settings
