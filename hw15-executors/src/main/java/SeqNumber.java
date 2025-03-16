@@ -1,3 +1,5 @@
+import static java.lang.Thread.sleep;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,8 +17,8 @@ public class SeqNumber {
                 }
                 if (value <= 1 && isReverse) {
                     lastState = state;
+                    isReverse = false;
                     notifyAll();
-                    break;
                 }
                 value += isReverse ? -1 : 1;
                 logger.info(String.valueOf(value));
@@ -24,6 +26,7 @@ public class SeqNumber {
                     isReverse = true;
                 }
                 lastState = state;
+                sleep(1000);
                 notifyAll();
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
