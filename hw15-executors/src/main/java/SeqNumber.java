@@ -15,8 +15,8 @@ public class SeqNumber {
                 while (lastState.equals(state)) {
                     this.wait();
                 }
+                lastState = state;
                 if (value <= 1 && isReverse) {
-                    lastState = state;
                     isReverse = false;
                     notifyAll();
                 }
@@ -25,7 +25,6 @@ public class SeqNumber {
                 if (value == 10) {
                     isReverse = true;
                 }
-                lastState = state;
                 sleep(1000);
                 notifyAll();
             } catch (InterruptedException e) {
